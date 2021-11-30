@@ -29,7 +29,7 @@ Projeto eCommerce - ReactJS
 ## Configurando o projeto
 
 É necessário realizar algumas configurações do projeto para que o Datocms retorne os dados.
-1. Vá para o arquivo .env;
+1. Na mesma raíz do arquivo .env crie um arquivo chamado .env.local e copie as variáveis que estão no .env;
 2. Aplique após o sinal de igual da variavel `REACT_APP_API_URL` o seguinte link: `https://graphql.datocms.com/`<br />
 3. Para a segunda variável `REACT_APP_API_TOKEN` vá para o site: `https://www.datocms.com/`<br />
 4. Logue na conta e escolha o projeto;
