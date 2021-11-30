@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useLayoutEffect, useState } from "react";
 import CardItem from "../../components/CardItem";
 import CartButton from "../../components/CartButton";
 import FilterMenu from "../../components/FilterMenu";
@@ -135,6 +135,28 @@ const Home = () => {
     handleProductsByFilter();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [openFilterMenu]);
+
+  const useWindowSize = () => {
+    const [size, setSize] = useState([0]);
+    useLayoutEffect(() => {
+      const updateSize = () => {
+        setSize([window.innerWidth]);
+      };
+
+      window.addEventListener("resize", updateSize);
+      updateSize();
+
+      return () => window.removeEventListener("resize", updateSize);
+    }, []);
+
+    return size;
+  };
+
+  const [width] = useWindowSize();
+
+  useEffect(() => {
+    setOpenFilterMenu(width > 600);
+  }, [width]);
 
   return (
     <>

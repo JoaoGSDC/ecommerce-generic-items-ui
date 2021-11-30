@@ -3,8 +3,6 @@ import { useSelector } from "react-redux";
 
 import { ReactComponent as Triangle } from "../../assets/images/icons/triangle.svg";
 import useLanguage from "./lang";
-/* import icons from "../../assets/images/icons";
-import Img from "../Img"; */
 import {
   Container,
   SelectContainer,

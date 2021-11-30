@@ -16,7 +16,7 @@ export const ContainerFilters = styled.div`
     justify-content: center;
 
     div:first-child {
-      max-width: 25%;
+      max-width: 15%;
     }
   }
 `;

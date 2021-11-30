@@ -1,6 +1,5 @@
 import React, { useEffect } from "react";
 import { ReactComponent as CheckConfirm } from "../../assets/images/icons/check-confirm.svg";
-/* import icons from "../../assets/images/icons/index"; */
 import { Container } from "./styles";
 
 interface IPropsDTO {

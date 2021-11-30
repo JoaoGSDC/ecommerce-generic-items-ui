@@ -77,13 +77,12 @@ const FilterMenu = ({ isOpen, onClose }: IPropsDTO) => {
       (option: string) => option === value
     );
 
-    // falta pegar o maior valor
     setRatingFilterValue(optionIndex === 0 ? 1 : 5);
   };
 
   return (
     <>
-      <BlackContainer isOpen={isOpen || innerWidth > 600}>
+      <BlackContainer isOpen={isOpen}>
         <Container>
           <ContainerHeader>
             <TitleText>{language.title}</TitleText>
