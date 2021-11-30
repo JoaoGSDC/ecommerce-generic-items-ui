@@ -1,7 +1,8 @@
 import React, { useState } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { ReactComponent as Close } from "../../assets/images/icons/close.svg";
 import Select from "../Select";
+import useLanguage from "./lang";
 import {
   BlackContainer,
   ButtonPrimary,
@@ -21,12 +22,21 @@ interface IPropsDTO {
 }
 
 const FilterMenu = ({ isOpen, onClose }: IPropsDTO) => {
+  const { innerWidth } = window;
   const dispatch = useDispatch();
+
+  const langOption: string = useSelector((state: any) => state.langOption);
+  const language = useLanguage(langOption)();
 
   const [minFilterValue, setMinFilterValue] = useState<number>(-1);
   const [maxFilterValue, setMaxFilterValue] = useState<number>(-1);
+  const [ratingFilterValue, setRatingFilterValue] = useState<number>(-1);
 
   const applyFilters = () => {
+    if (innerWidth > 600 && minFilterValue === -1 && maxFilterValue === -1) {
+      cleanFilters();
+    }
+
     if (
       minFilterValue > maxFilterValue ||
       minFilterValue === undefined ||
@@ -39,6 +49,7 @@ const FilterMenu = ({ isOpen, onClose }: IPropsDTO) => {
 
     dispatch({ type: "ADD_MIN_FILTER", minPriceFilter: minFilterValue });
     dispatch({ type: "ADD_MAX_FILTER", maxPriceFilter: maxFilterValue });
+    dispatch({ type: "ADD_RATING_FILTER", ratingFilter: ratingFilterValue });
 
     onClose(false);
   };
@@ -46,6 +57,7 @@ const FilterMenu = ({ isOpen, onClose }: IPropsDTO) => {
   const cleanFilters = () => {
     dispatch({ type: "DEL_MIN_FILTER", minPriceFilter: -1 });
     dispatch({ type: "DEL_MAX_FILTER", maxPriceFilter: -1 });
+    dispatch({ type: "DEL_RATING_FILTER", ratingFilter: -1 });
 
     onClose(false);
   };
@@ -60,12 +72,21 @@ const FilterMenu = ({ isOpen, onClose }: IPropsDTO) => {
     return numberValue;
   };
 
+  const changeRatingFilter = (value: string) => {
+    const optionIndex = language.optionsOfSelect.findIndex(
+      (option: string) => option === value
+    );
+
+    // falta pegar o maior valor
+    setRatingFilterValue(optionIndex === 0 ? 1 : 5);
+  };
+
   return (
     <>
-      <BlackContainer isOpen={isOpen}>
+      <BlackContainer isOpen={isOpen || innerWidth > 600}>
         <Container>
           <ContainerHeader>
-            <TitleText>FILTERS</TitleText>
+            <TitleText>{language.title}</TitleText>
 
             <CloseButton type="button" onClick={() => onClose(false)}>
               <Close />
@@ -96,16 +117,19 @@ const FilterMenu = ({ isOpen, onClose }: IPropsDTO) => {
                 }
               />
 
-              <Select data={["Rating"]} />
+              <Select
+                data={language.optionsOfSelect}
+                onSelect={(value: string) => changeRatingFilter(value)}
+              />
             </FieldsContainer>
 
             <ButtonsContainer>
               <ButtonSecondary type="button" onClick={() => cleanFilters()}>
-                Clear
+                {language.secondaryButton}
               </ButtonSecondary>
 
               <ButtonPrimary type="button" onClick={() => applyFilters()}>
-                Apply filters
+                {language.primaryButton}
               </ButtonPrimary>
             </ButtonsContainer>
           </ContainerForm>

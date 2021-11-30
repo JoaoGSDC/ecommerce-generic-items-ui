@@ -36,4 +36,15 @@ export const Container = styled.div`
     margin-right: 15px;
     color: #787885;
   }
+
+  @media only screen and (min-width: 600px) {
+    width: 25%;
+    height: 50px;
+    margin-left: auto;
+    margin-right: auto;
+    left: 0;
+    right: 0;
+    text-align: center;
+    bottom: 0px;
+  }
 `;

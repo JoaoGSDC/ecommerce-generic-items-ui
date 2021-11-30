@@ -23,7 +23,7 @@ export const GlobalStyle = createGlobalStyle`
 
     @media only screen and (min-width: 600px) {
       &:hover {
-        background-color: rgba(0, 0, 0, 0.1);
+        background-color: #efefef;
       }
     }
   }

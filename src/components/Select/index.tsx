@@ -1,6 +1,8 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
 
 import { ReactComponent as Triangle } from "../../assets/images/icons/triangle.svg";
+import useLanguage from "./lang";
 /* import icons from "../../assets/images/icons";
 import Img from "../Img"; */
 import {
@@ -15,17 +17,38 @@ import {
 } from "./styles";
 
 interface IPropsDTO {
+  isNumber?: boolean;
   isNotSortBy?: boolean;
   data: any[];
   onSelect?: any;
 }
 
-const Select = ({ data, isNotSortBy = false, onSelect }: IPropsDTO) => {
+const Select = ({
+  data,
+  isNotSortBy = false,
+  onSelect,
+  isNumber = false,
+}: IPropsDTO) => {
+  const langOption: string = useSelector((state: any) => state.langOption);
+  const language = useLanguage(langOption)();
+
   const [isOpen, setIsOpen] = useState<boolean>(false);
 
-  const [selectedOption, setSelectedOption] = useState<any>(data[0]);
+  const [selectedOption, setSelectedOption] = useState<any>();
+  const [index, setIndex] = useState<number>(0);
+
+  useEffect(() => {
+    setSelectedOption(data[index]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [data]);
 
   const selectOption = (value: any) => {
+    const indexOfValue: number = data.findIndex(
+      (valueOfData: any) => valueOfData === value
+    );
+
+    setIndex(indexOfValue);
+
     setSelectedOption(value);
     setIsOpen(false);
     onSelect(value);
@@ -33,8 +56,8 @@ const Select = ({ data, isNotSortBy = false, onSelect }: IPropsDTO) => {
 
   return (
     <>
-      <Container>
-        {!isNotSortBy ? <Title>SORT BY</Title> : <></>}
+      <Container isNumber={isNumber}>
+        {!isNotSortBy ? <Title>{language.title}</Title> : <></>}
 
         <SelectContainer isNotSortBy={isNotSortBy}>
           <SelectButton type="button" onClick={() => setIsOpen(!isOpen)}>

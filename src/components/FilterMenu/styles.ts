@@ -109,6 +109,7 @@ export const BlackContainer = styled.div.attrs(
   z-index: 9;
   width: 100%;
   height: 100%;
+  margin-bottom: 16px;
   background-color: rgba(0, 0, 0, 0.5);
 
   animation: ${opacityAnimation} 0.2s;

@@ -1,6 +1,4 @@
 import React, { useEffect, useState } from "react";
-import { gql } from "graphql-request";
-import client from "../../services/client";
 import CardItem from "../../components/CardItem";
 import CartButton from "../../components/CartButton";
 import FilterMenu from "../../components/FilterMenu";
@@ -22,8 +20,12 @@ import {
 } from "../../lib/dato-cms";
 import { IProductsDTO } from "../../interfaces/IProductsDTO";
 import { useSelector } from "react-redux";
+import useLanguage from "./lang";
 
 const Home = () => {
+  const langOption: string = useSelector((state: any) => state.langOption);
+  const language = useLanguage(langOption)();
+
   const { innerWidth } = window;
 
   const minPriceFilter: number = useSelector(
@@ -34,7 +36,14 @@ const Home = () => {
     (state: any) => state.maxPriceFilter
   );
 
-  const [openFilterMenu, setOpenFilterMenu] = useState<boolean>(false);
+  const ratingFilter: number = useSelector((state: any) => state.ratingFilter);
+
+  const [openFilterMenu, setOpenFilterMenu] = useState<boolean>(
+    innerWidth > 600
+  );
+
+  const [selectedOptionOfSortBy, setSelectedOptionOfSortBy] =
+    useState<string>("");
 
   const [currentPage, setCurrentPage] = useState<number>(0);
   const [products, setProducts] = useState<IProductsDTO[]>(
@@ -50,9 +59,27 @@ const Home = () => {
 
   useEffect(() => {
     const handleProducts = async () => {
+      const optionIndex =
+        selectedOptionOfSortBy !== ""
+          ? language.optionsSortBy.findIndex(
+              (option: string) => option === selectedOptionOfSortBy
+            )
+          : 0;
+
+      const options = [
+        "avaliation_DESC",
+        "name_ASC",
+        "price_DESC",
+        "price_ASC",
+      ];
+
       const page = currentPage * postsPerPage;
       const lengthProducts = await getAmountProducts();
-      const productsFetch = await getAllProducts(postsPerPage, page);
+      const productsFetch = await getAllProducts(
+        postsPerPage,
+        page,
+        options[optionIndex]
+      );
 
       setAmountProducts(lengthProducts);
       setProducts(productsFetch);
@@ -61,7 +88,7 @@ const Home = () => {
 
     handleProducts();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [currentPage]);
+  }, [currentPage, selectedOptionOfSortBy, innerWidth]);
 
   const paginate = (pageNum: number) => setCurrentPage(pageNum);
   const nextPage = () =>
@@ -84,6 +111,10 @@ const Home = () => {
   };
 
   useEffect(() => {
+    if (openFilterMenu) {
+      return;
+    }
+
     const handleProductsByFilter = async () => {
       if (minPriceFilter === -1) {
         setProducts(productsAux);
@@ -93,10 +124,12 @@ const Home = () => {
 
       const productsFetch = await getProductsByFilter(
         minPriceFilter,
-        maxPriceFilter
+        maxPriceFilter,
+        ratingFilter
       );
 
       setProducts(productsFetch);
+      setOpenFilterMenu(true);
     };
 
     handleProductsByFilter();
@@ -106,19 +139,22 @@ const Home = () => {
   return (
     <>
       <Header
-        onChangeSearchValue={(value: any) => filterBySearchInput(value)}
+        onChangeSearchValue={(value: string) => filterBySearchInput(value)}
       />
 
       <FilterMenu
-        isOpen={openFilterMenu || innerWidth > 600}
+        isOpen={openFilterMenu}
         onClose={(value: boolean) => setOpenFilterMenu(value)}
       />
 
       <ContainerFilters>
-        <Select data={["Rating"]} />
+        <Select
+          data={language.optionsSortBy}
+          onSelect={(value: string) => setSelectedOptionOfSortBy(value)}
+        />
 
         <FilterButton type="button" onClick={() => setOpenFilterMenu(true)}>
-          FILTER
+          {language.filter}
         </FilterButton>
       </ContainerFilters>
 

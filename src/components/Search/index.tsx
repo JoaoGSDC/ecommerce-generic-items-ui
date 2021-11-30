@@ -1,5 +1,6 @@
-import React, { useState } from "react";
+import React from "react";
 import { ReactComponent as MagnifyingGlass } from "../../assets/images/icons/magnifying-glass.svg";
+import useLanguage from "./lang";
 import { Container } from "./styles";
 
 interface IPropsDTO {
@@ -7,6 +8,8 @@ interface IPropsDTO {
 }
 
 const Search = ({ onChange }: IPropsDTO) => {
+  const language = useLanguage('ptBr')();
+
   const handleSearchInputValue = (
     element: React.ChangeEvent<HTMLInputElement>
   ) => {
@@ -20,7 +23,7 @@ const Search = ({ onChange }: IPropsDTO) => {
 
         <input
           type="text"
-          placeholder="useless items on white..."
+          placeholder={language.searchPlaceholder}
           onChange={handleSearchInputValue}
         />
       </Container>

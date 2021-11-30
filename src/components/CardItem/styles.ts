@@ -33,6 +33,12 @@ export const NameItem = styled.label`
   font-weight: 400;
   color: #19191d;
   margin-bottom: 8px;
+  height: 51px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
 `;
 
 export const ContainerRow = styled.div`
@@ -50,7 +56,11 @@ export const PriceText = styled.label`
   font-size: 16px;
   font-weight: 700;
   color: #000000;
-  margin-right: 28px;
+  line-height: 24px;
+
+  @media only screen and (min-width: 600px) {
+    font-size: 24px;
+  }
 `;
 
 export const ButtonAddCart = styled.button`
@@ -72,4 +82,5 @@ export const NoteText = styled.label`
   font-weight: 500;
   color: #5e6366;
   margin-right: 20px;
+  line-height: 14px;
 `;

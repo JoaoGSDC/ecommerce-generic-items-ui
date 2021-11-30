@@ -25,8 +25,6 @@ const Pagination = ({
     pageNumber.push(i);
   }
 
-  console.log(totalPosts, postPerPage, Math.ceil(totalPosts / postPerPage));
-
   return (
     <>
       <Container>

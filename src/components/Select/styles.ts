@@ -1,6 +1,8 @@
 import styled from "styled-components";
 
-export const Container = styled.div`
+export const Container = styled.div.attrs(
+  (props: { isNumber: boolean }) => props
+)`
   display: flex;
   justify-content: center;
   align-items: center;
@@ -9,7 +11,7 @@ export const Container = styled.div`
   width: 100%;
 
   @media only screen and (min-width: 600px) {
-    max-width: 150px;
+    max-width: ${(props) => (!props.isNumber ? '150px' : '65px')};
   }
 `;
 

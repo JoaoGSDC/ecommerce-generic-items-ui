@@ -22,9 +22,12 @@ export const Container = styled.div`
     background-color: #ededf0;
     border: none;
     border-radius: 4px;
-    padding-right: 45px;
-    padding-left: 10px;
     font-size: 14px;
+    padding: 0px 45px 0px 10px;
+
+    @media only screen and (min-width: 600px) {
+      height: 48px;
+    }
   }
 
   @media only screen and (min-width: 600px) {

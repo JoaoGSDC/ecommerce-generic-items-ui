@@ -15,6 +15,7 @@ import {
   PriceText,
 } from "./styles";
 import { IProductsDTO } from "../../interfaces/IProductsDTO";
+import useLanguage from "./lang";
 
 interface IPropsDTO {
   product: IProductsDTO;
@@ -22,6 +23,9 @@ interface IPropsDTO {
 
 const CardItem = ({ product }: IPropsDTO) => {
   const dispatch: any = useDispatch();
+
+  const langOption: string = useSelector((state: any) => state.langOption);
+  const language = useLanguage(langOption)();
 
   const [openNotification, setOpenNotification] = useState<boolean>(false);
   const [amountItem, setAmountItem] = useState<number>(1);
@@ -50,21 +54,22 @@ const CardItem = ({ product }: IPropsDTO) => {
         <ContainerRow>
           <Stars />
 
-          <NoteText>{product.avaliation}</NoteText>
+          <NoteText>{product.avaliation.toFixed(2)}</NoteText>
         </ContainerRow>
 
         <ContainerRow>
-          <PriceText>${product.price}</PriceText>
+          <PriceText>${product.price.toFixed(2)}</PriceText>
 
           <Select
             data={[1, 2, 3, 4, 5, 6, 7, 8, 9, 10]}
             isNotSortBy
+            isNumber
             onSelect={(value: any) => setAmountItem(value)}
           />
         </ContainerRow>
 
         <ButtonAddCart type="button" onClick={() => addItemToCart()}>
-          Add to cart
+          {language.button}
         </ButtonAddCart>
 
         <Notification

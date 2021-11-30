@@ -22,5 +22,6 @@ export const Container = styled.button`
 
   @media only screen and (min-width: 600px) {
     width: 280px;
+    height: 48px;
   }
 `;
